@@ -26,8 +26,8 @@ const mimeTypes = {
   '.woff2': 'font/woff2',
 };
 
-async function serveStatic(url) {
-  const filePath = join(__dirname, 'dist', 'client', url === '/' ? 'index.html' : url);
+async function serveStatic(pathname) {
+  const filePath = join(__dirname, 'dist', 'client', pathname === '/' ? 'index.html' : pathname);
   try {
     const data = await readFile(filePath);
     const ext = extname(filePath);
@@ -71,7 +71,7 @@ const server = createServer(async (req, res) => {
       }
     }
 
-    const request = new Request(req.url, {
+    const request = new Request(url.href, {
       method: req.method,
       headers,
       body: req.method !== 'GET' && req.method !== 'HEAD' ? req : undefined,
